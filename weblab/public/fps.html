@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    canvas {
+      border: 1px solid #d3d3d3;
+      background-color: #f1f1f1;
+    }
+  </style>
+  <title>Frame per seconds</title>
+</head>
+<body onload="start()">
+<script>
+  const canvas = document.createElement('canvas')
+  let context
+
+  const font = '10pt Consolas'
+  const color = 'black'
+  const x = 20
+  const y = 40
+
+  let prev = 0
+  let frame = 0
+  let f = 0
+
+  function start() {
+    canvas.width = 270
+    canvas.height = 270
+    prev = Date.now()
+
+    context = canvas.getContext('2d')
+    context.font = font
+    context.fillStyle = color
+    document.body.insertBefore(canvas, document.body.childNodes[0])
+
+    setInterval(draw, 1000 / 60)
+  }
+
+  function draw() {
+    clear()
+    const now = Date.now()
+    frame++
+
+    const d = now - prev
+
+    if (d >= 1000) {
+      f = frame
+      frame = 0
+      prev = now
+    }
+
+    const t = "fps : " + f
+    context.fillText(t, x, y)
+    context.fillText("now : " + now, x, y + 20)
+    context.fillText("d : " + d, x, y + 40)
+  }
+
+  function clear() {
+    context.clearRect(0, 0, canvas.width, canvas.height)
+  }
+</script>
+</body>
+</html>

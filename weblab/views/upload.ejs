@@ -1,0 +1,14 @@
+<h1>File Upload</h1>
+<hr>
+
+<h3>Single File Upload</h3>
+<form action="/upload-file" enctype="multipart/form-data" method="post">
+    <input type="file" name="attachment">
+    <button type="submit" class="btn btn-primary">upload</button>
+</form>
+
+<h3>Multiple File Upload</h3>
+<form action="/upload-files" enctype="multipart/form-data" method="post">
+    <input type="file" name="attachments" multiple>
+    <button type="submit" class="btn btn-primary">upload</button>
+</form>
