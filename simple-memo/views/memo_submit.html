@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memo submit POST</title>
+</head>
+<body>
+
+<form id="form" action="/simple-memo/add-memo" method="post">
+    <label for="contents">Memo</label>
+    <input type="text" name="contents" id="contents" />
+    <button type="submit">submit</button>
+</form>
+
+<p id="result"></p>
+
+<script>
+    printResult("submit result")
+
+    async function handleSubmit(event) {
+        event.preventDefault()
+        const form = event.currentTarget
+        const url = form.action
+
+        try {
+            const formData = new FormData(form)
+            const responseData = await postFormDataAsJson(url, formData)
+            printResult(JSON.stringify(responseData))
+        } catch (error) {
+            printResult(error)
+        }
+    }
+
+    async function postFormDataAsJson(url, formData) {
+        const data = Object.fromEntries(formData.entries())
+        const result = JSON.stringify(data)
+
+        const option = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: result,
+        }
+        const response = await fetch(url, option)
+
+        if (!response.ok) {
+            const errorMessage = await response.text()
+            throw new Error(errorMessage)
+        }
+
+        return response.json()
+    }
+
+    function printResult(msg) {
+        document.getElementById("result").innerHTML = msg
+    }
+
+    const form = document.getElementById("form")
+    form.addEventListener("submit", handleSubmit)
+</script>
+
+</body>
+</html>
